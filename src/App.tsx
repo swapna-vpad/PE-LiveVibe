@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { AddTaskModal } from '@/components/AddTaskModal';
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tasks, setTasks] = useState<string[]>([]);
+
   const handleAddTask = () => {
-    // TODO: Implement add task functionality
-    console.log('Add task clicked');
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleAddTaskSubmit = (taskText: string) => {
+    setTasks(prev => [...prev, taskText]);
+    console.log('Task added:', taskText);
   };
 
   return (
@@ -35,9 +47,29 @@ function App() {
             Add Task
           </button>
         </div>
+
+        {/* Display tasks if any */}
+        {tasks.length > 0 && (
+          <div className="max-w-md mx-auto">
+            <h2 className="text-xl font-semibold mb-4">Your Tasks:</h2>
+            <ul className="space-y-2">
+              {tasks.map((task, index) => (
+                <li key={index} className="p-3 bg-card rounded-lg border">
+                  {task}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
+
+      <AddTaskModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onAddTask={handleAddTaskSubmit}
+      />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
