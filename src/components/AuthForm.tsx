@@ -20,12 +20,23 @@ export function AuthForm() {
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            emailRedirectTo: undefined, // Disable email confirmation
+          }
         })
         if (error) throw error
-        setMessage('Check your email for the confirmation link!')
+        
+        // Check if user was created successfully
+        if (data.user && !data.session) {
+          setMessage('Account created! Please sign in with your credentials.')
+          setIsSignUp(false) // Switch to sign in mode
+        } else if (data.session) {
+          // User is automatically signed in (email confirmation disabled)
+          setMessage('Account created and signed in successfully!')
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -38,10 +49,6 @@ export function AuthForm() {
     } finally {
       setLoading(false)
     }
-  }
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
   }
 
   return (
@@ -99,7 +106,11 @@ export function AuthForm() {
         <div className="text-center">
           <button
             type="button"
-            onClick={() => setIsSignUp(!isSignUp)}
+            onClick={() => {
+              setIsSignUp(!isSignUp)
+              setError(null)
+              setMessage(null)
+            }}
             className="text-blue-600 hover:text-blue-700 text-sm"
           >
             {isSignUp
@@ -107,6 +118,14 @@ export function AuthForm() {
               : "Don't have an account? Sign up"}
           </button>
         </div>
+
+        {isSignUp && (
+          <div className="text-center">
+            <p className="text-xs text-muted-foreground">
+              No email confirmation required - you can start using the app immediately!
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )
