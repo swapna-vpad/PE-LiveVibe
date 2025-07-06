@@ -170,13 +170,49 @@ export function TaskManager() {
                 </li>
               ))}
             </ul>
+
+            {/* AI Image below the tasks table */}
+            <div className="mt-8 text-center">
+              <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6 border border-purple-100">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">AI-Powered Productivity</h3>
+                <div className="relative overflow-hidden rounded-lg shadow-lg">
+                  <img 
+                    src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                    alt="AI and technology concept with futuristic digital interface"
+                    className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                </div>
+                <p className="text-sm text-gray-600 mt-3">
+                  Enhance your productivity with AI-driven insights and smart task management
+                </p>
+              </div>
+            </div>
           </div>
         )}
 
         {/* Empty state */}
         {!loading && tasks.length === 0 && !error && (
           <div className="text-center">
-            <p className="text-muted-foreground">No tasks yet. Add your first task to get started!</p>
+            <p className="text-muted-foreground mb-8">No tasks yet. Add your first task to get started!</p>
+            
+            {/* AI Image for empty state */}
+            <div className="max-w-md mx-auto">
+              <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-6 border border-purple-100">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">AI-Powered Productivity</h3>
+                <div className="relative overflow-hidden rounded-lg shadow-lg">
+                  <img 
+                    src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                    alt="AI and technology concept with futuristic digital interface"
+                    className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                </div>
+                <p className="text-sm text-gray-600 mt-3">
+                  Enhance your productivity with AI-driven insights and smart task management
+                </p>
+              </div>
+            </div>
           </div>
         )}
       </div>
