@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AddTaskModal } from '@/components/AddTaskModal';
+import { UserProfile } from '@/components/UserProfile';
 import { useTasks } from '@/hooks/useTasks';
 import { supabase } from '@/lib/supabase';
 import { Check, X, LogOut, RefreshCw } from 'lucide-react';
@@ -82,6 +83,11 @@ export function TaskManager() {
               Sign Out
             </Button>
           </div>
+        </div>
+
+        {/* User Profile Section */}
+        <div className="max-w-md mx-auto">
+          <UserProfile />
         </div>
 
         <div className="text-center mb-8">
