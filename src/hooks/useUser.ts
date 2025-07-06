@@ -23,33 +23,22 @@ export function useUser() {
         return
       }
 
+      // Use upsert to handle both creating and fetching user profile
       const { data, error } = await supabase
         .from('users')
-        .select('*')
-        .eq('id', authUser.id)
+        .upsert([{
+          id: authUser.id,
+          email: authUser.email || '',
+          username: authUser.email?.split('@')[0] || 'user'
+        }], {
+          onConflict: 'id'
+        })
+        .select()
         .single()
 
-      if (error) {
-        // If user profile doesn't exist, create it
-        if (error.code === 'PGRST116') {
-          const { data: newUser, error: insertError } = await supabase
-            .from('users')
-            .insert([{
-              id: authUser.id,
-              email: authUser.email || '',
-              username: authUser.email?.split('@')[0] || 'user'
-            }])
-            .select()
-            .single()
+      if (error) throw error
 
-          if (insertError) throw insertError
-          setUser(newUser)
-        } else {
-          throw error
-        }
-      } else {
-        setUser(data)
-      }
+      setUser(data)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
       console.error('Error fetching user:', err)

@@ -137,9 +137,9 @@ export function useTasks() {
 
   // Set up real-time subscription
   useEffect(() => {
-    const { data: { user } } = supabase.auth.getUser()
-    
-    user.then(({ user }) => {
+    const setupSubscription = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      
       if (!user) return
 
       const subscription = supabase
@@ -161,7 +161,9 @@ export function useTasks() {
       return () => {
         subscription.unsubscribe()
       }
-    })
+    }
+
+    setupSubscription()
   }, [])
 
   return {
